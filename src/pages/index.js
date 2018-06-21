@@ -1,8 +1,6 @@
 import React from 'react'
 import Link from 'gatsby-link'
 
-import Markdowns from '../components/markdowns'
-
 const IndexPage = ({ data }) => (
   <div>
     <h1>Hi people</h1>
