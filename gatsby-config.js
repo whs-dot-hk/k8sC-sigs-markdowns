@@ -1,22 +1,31 @@
+fs   = require('fs');
+yaml = require('js-yaml');
+
+const sigsYaml = yaml.safeLoad(fs.readFileSync('../sigs.yaml', 'utf8'));
+
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map
+var reformattedArray = sigsYaml.sigs.map(obj => { 
+  return obj.dir;
+});
+
+reformattedArray = reformattedArray.map(obj => { 
+  var rObj = {
+    resolve: `gatsby-source-filesystem`,
+    options: {
+      name: obj,
+      path: `../` + obj,
+    },
+  };
+  return rObj;
+});
+
 module.exports = {
+  pathPrefix: "/k8sC-sigs-markdowns",
   siteMetadata: {
-    title: 'Gatsby Default Starter',
+    title: 'SIGs Overview',
   },
   plugins: [
-    {
-      resolve: `gatsby-source-filesystem`,
-      options: {
-        name: `sig-api-machinery`,
-        path: `../sig-api-machinery`,
-      },
-    },
-    {
-      resolve: `gatsby-source-filesystem`,
-      options: {
-        name: `sig-apps`,
-        path: `../sig-apps`,
-      },
-    },
+    ... reformattedArray,
     `gatsby-transformer-remark`,
     'gatsby-plugin-react-helmet',
   ],
